@@ -31,6 +31,14 @@ public class WordRelationController {
         return ResponseEntity.ok(wordService.addNewWord(word1,word2,relation));
     }
 
+    @GetMapping("/path/{word1}/{word2}")
+    public ResponseEntity<String> getPath(@PathVariable String word1,
+                                                                 @PathVariable String word2) {
+
+
+        return ResponseEntity.ok(wordService.getPath(word1,word2));
+    }
+
     @GetMapping(path = "")
     public ResponseEntity<List<WordRelationEntity>> getAllWords() {
 

@@ -54,8 +54,8 @@ public class WordService {
         if (!verifyWords(word1, word2, relation)) {
             throw new InvalidInputException("Words contain invalid characters only accept A to Z or a to Z");
         }
-        List<WordRelationEntity>  wordRelationEntities= (List<WordRelationEntity>) wordRelationRepository.findAll();
-        checkExistingWords(wordRelationEntities,word1,word2,relation);
+        List<WordRelationEntity> wordRelationEntities = (List<WordRelationEntity>) wordRelationRepository.findAll();
+        checkExistingWords(wordRelationEntities, word1, word2, relation);
         WordRelationEntity wordRelation = new WordRelationEntity(word1.trim().toLowerCase(), word2.trim().toLowerCase(), relation.trim().toLowerCase());
         WordRelationEntity savedWordRelation = wordRelationRepository.save(wordRelation);
         return savedWordRelation;
@@ -93,4 +93,34 @@ public class WordService {
         return new ResponseObjectInverse(mainList, inverseWordsList);
     }
 
+
+    public String getPath(String word1, String word2) {
+        List<WordRelationEntity> wordsList = (List<WordRelationEntity>) wordRelationRepository.findAll();
+
+
+        return getRoot(word1, word2, wordsList);
+    }
+
+    String getRoot(String word1, String baseWord, List<WordRelationEntity> wordsList) {
+        WordRelationEntity word = null;
+        int i = 0;
+        for (i = 0; i < wordsList.size(); i++) {
+            word = wordsList.get(i);
+            if (word.getWord1().equalsIgnoreCase(word1) || word.getWord2().equalsIgnoreCase(word1))
+                break;
+
+        }
+
+        if (word != null) {
+
+            wordsList.remove(i);
+            String secondWord = word.getWord1().equalsIgnoreCase(word1) ? word.getWord2() : word1;
+            return " " + word1 + " ==" + word.getRelation() + "=>" +
+                    (baseWord.equalsIgnoreCase(word.getWord1()) || baseWord.equalsIgnoreCase(word.getWord2())
+                            ? secondWord : getRoot(secondWord, baseWord, wordsList));
+        }
+
+        return "";
+
+    }
 }
