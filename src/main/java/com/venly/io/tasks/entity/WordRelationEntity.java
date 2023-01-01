@@ -1,14 +1,15 @@
 package com.venly.io.tasks.entity;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "wordrelation")
 public class WordRelationEntity {
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private String myid;
     private String word1;
     private String word2;
     private String relation;

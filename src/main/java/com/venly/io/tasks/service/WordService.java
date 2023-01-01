@@ -98,23 +98,32 @@ public class WordService {
         List<WordRelationEntity> wordsList = (List<WordRelationEntity>) wordRelationRepository.findAll();
 
 
-        return getRoot(word1, word2, wordsList);
+        List<WordRelationEntity> newList=new ArrayList<>();
+
+        wordsList.stream().forEach(wordRelationEntity -> {
+            newList.add(wordRelationEntity);
+
+        });
+
+        return getRoot(word1, word2, newList);
     }
 
     String getRoot(String word1, String baseWord, List<WordRelationEntity> wordsList) {
         WordRelationEntity word = null;
         int i = 0;
-        for (i = 0; i < wordsList.size(); i++) {
+        while(wordsList.size()>i) {
             word = wordsList.get(i);
             if (word.getWord1().equalsIgnoreCase(word1) || word.getWord2().equalsIgnoreCase(word1))
                 break;
+
+            i++;
 
         }
 
         if (word != null) {
 
             wordsList.remove(i);
-            String secondWord = word.getWord1().equalsIgnoreCase(word1) ? word.getWord2() : word1;
+            String secondWord = word.getWord1().equalsIgnoreCase(word1) ? word.getWord2() : word.getWord1();
             return " " + word1 + " ==" + word.getRelation() + "=>" +
                     (baseWord.equalsIgnoreCase(word.getWord1()) || baseWord.equalsIgnoreCase(word.getWord2())
                             ? secondWord : getRoot(secondWord, baseWord, wordsList));
