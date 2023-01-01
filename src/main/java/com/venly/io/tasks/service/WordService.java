@@ -74,7 +74,10 @@ public class WordService {
         return (List<WordRelationEntity>) wordRelationRepository.findAllRelated("related");
     }
 
-
+    /**
+     * Get All Including inversive
+     * @return
+     */
     public ResponseObjectInverse getAllIncludingInverse() {
         List<WordRelationEntity> wordsList = (List<WordRelationEntity>) wordRelationRepository.findAll();
 
@@ -93,7 +96,12 @@ public class WordService {
         return new ResponseObjectInverse(mainList, inverseWordsList);
     }
 
-
+    /**
+     * Get Path Service
+     * @param word1
+     * @param word2
+     * @return
+     */
     public String getPath(String word1, String word2) {
         List<WordRelationEntity> wordsList = (List<WordRelationEntity>) wordRelationRepository.findAll();
 
@@ -108,6 +116,13 @@ public class WordService {
         return getRoot(word1, word2, newList);
     }
 
+    /**
+     * Recurrsively check heirachy
+     * @param word1
+     * @param baseWord
+     * @param wordsList
+     * @return
+     */
     String getRoot(String word1, String baseWord, List<WordRelationEntity> wordsList) {
         WordRelationEntity word = null;
         int i = 0;
