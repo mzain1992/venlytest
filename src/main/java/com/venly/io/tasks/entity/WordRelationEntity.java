@@ -13,15 +13,7 @@ public class WordRelationEntity {
     private String word2;
     private String relation;
 
-    public String getInverse() {
-        return inverse;
-    }
 
-    public void setInverse(String inverse) {
-        this.inverse = inverse;
-    }
-
-    private String inverse;
 
     public WordRelationEntity() {}
 
